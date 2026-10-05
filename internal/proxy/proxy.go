@@ -32,6 +32,7 @@ func New(target string) (*httputil.ReverseProxy, error) {
 		IdleConnTimeout:       90 * time.Second,
 		ResponseHeaderTimeout: 10 * time.Second,
 	}
+	rp.ModifyResponse = logMissionStatus
 	rp.ErrorHandler = func(w http.ResponseWriter, r *http.Request, err error) {
 		slog.Error("upstream error", "path", r.URL.Path, "err", err)
 		http.Error(w, "upstream unavailable", http.StatusBadGateway)

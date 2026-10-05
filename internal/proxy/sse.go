@@ -82,7 +82,7 @@ func (h *Hub) consume(ctx context.Context, streamURL string) error {
 	return sc.Err()
 }
 
-// ServeHTTP streams frames to one client with periodic heartbeats.
+// Handler streams frames to one client with periodic heartbeats.
 func (h *Hub) Handler(heartbeat time.Duration) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		fl, ok := w.(http.Flusher)
