@@ -1,0 +1,20 @@
+{
+  "name": "@kestrel/edge-auth",
+  "version": "0.4.0",
+  "private": true,
+  "description": "Cloudflare Worker that validates mTLS client certificates from hospital devices",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@kestrel/contracts": "^3.2.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240909.0",
+    "typescript": "^5.5.4",
+    "wrangler": "^3.78.0"
+  }
+}
