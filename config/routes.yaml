@@ -1,0 +1,30 @@
+# Upstream services and route table for the gateway.
+# Paths are matched by prefix; `strip` removes the prefix before proxying.
+upstreams:
+  dispatch: http://kestrel-dispatch.kestrel.svc.cluster.local:8080
+  telemetry: http://kestrel-telemetry.kestrel.svc.cluster.local:9090
+  compliance: http://kestrel-compliance.kestrel.svc.cluster.local:8000
+
+routes:
+  - prefix: /v1/missions
+    upstream: dispatch
+    scopes: [missions:read, missions:write]
+    rate: { rps: 20, burst: 40 }
+  - prefix: /v1/airspace
+    upstream: dispatch
+    scopes: [missions:read]
+    rate: { rps: 10, burst: 20 }
+  - prefix: /v1/telemetry
+    upstream: telemetry
+    scopes: [telemetry:read]
+    rate: { rps: 50, burst: 100 }
+  - prefix: /v1/custody
+    upstream: compliance
+    scopes: [custody:read, custody:write]
+    rate: { rps: 10, burst: 20 }
+
+sse:
+  # Live telemetry frames are fanned out to console clients over SSE.
+  upstream: telemetry
+  path: /internal/stream
+  heartbeat_seconds: 15
